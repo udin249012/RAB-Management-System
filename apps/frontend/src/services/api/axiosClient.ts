@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import type { ApiErrorResponse } from "@rab/shared-types";
 import { getFirebaseClientAuth, isFirebaseClientConfigured } from "@/services/firebase";
 
-const apiBaseUrl = import.meta.env.VITE_API_URL || "http://localhost:4000/api/v1";
+const apiBaseUrl = import.meta.env.VITE_API_URL || "/api/v1";
 
 export const apiClient = axios.create({
   baseURL: apiBaseUrl,

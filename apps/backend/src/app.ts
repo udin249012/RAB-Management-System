@@ -27,11 +27,35 @@ export function createApp(): Express {
   const env = loadEnvironment();
   const app = express();
 
+  app.set("trust proxy", 1);
+
+  const allowedOrigins = new Set(
+    env.CORS_ORIGIN.split(",")
+      .map((origin) => origin.trim())
+      .filter(Boolean),
+  );
+  if (process.env.VERCEL_URL) {
+    allowedOrigins.add(`https://${process.env.VERCEL_URL}`);
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    allowedOrigins.add(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+  }
+
   app.use(helmet());
   app.use(
-    cors({
-      origin: env.CORS_ORIGIN.split(",").map((origin) => origin.trim()),
-      credentials: true,
+    cors((req, callback) => {
+      const origin = req.header("origin");
+      const host = req.header("x-forwarded-host") ?? req.header("host");
+      const isSameHost = Boolean(
+        origin && host && (origin === `https://${host}` || origin === `http://${host}`),
+      );
+
+      if (!origin || allowedOrigins.has(origin) || isSameHost) {
+        callback(null, { origin: true, credentials: true });
+        return;
+      }
+
+      callback(null, { origin: false, credentials: true });
     }),
   );
 
