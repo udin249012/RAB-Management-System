@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
+    --radius: 0.5rem;
+    --glass-tint: oklch(1 0 0 / 16%);
+    --glass-tint-frosted: oklch(0.99 0.004 240 / 78%);
+    --glass-rim:
+      inset 1px 1px 0 -0.5px oklch(1 0 0 / 85%),
+      inset -1px -1px 0 -0.5px oklch(0.86 0.02 240 / 45%),
+      inset 0 0 0 1px oklch(0.86 0.02 240 / 55%), inset 0 0 12px -4px oklch(1 0 0 / 60%);
+    --glass-shadow: 0 2px 6px oklch(0.2 0.04 250 / 8%), 0 14px 34px -10px oklch(0.2 0.04 250 / 16%);
+    --glass-foreground: oklch(0.18 0.02 250);
+    --glass-highlight: oklch(0.55 0.2 258 / 12%);
+    --glass-highlight-hover: oklch(0.55 0.2 258 / 7%);
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 10%;
+    --card-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 45 93% 47%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 20%;
+    --input: 217 33% 20%;
+    --ring: 217 91% 60%;
+    --glass-tint: oklch(0.2 0.015 250 / 28%);
+    --glass-tint-frosted: oklch(0.18 0.02 250 / 62%);
+    --glass-rim:
+      inset 1px 1px 0 -0.5px oklch(1 0 0 / 35%), inset -1px -1px 0 -0.5px oklch(1 0 0 / 15%),
+      inset 0 0 0 1px oklch(1 0 0 / 14%), inset 0 0 12px -4px oklch(1 0 0 / 18%);
+    --glass-shadow: 0 2px 6px oklch(0 0 0 / 22%), 0 14px 36px -8px oklch(0 0 0 / 50%);
+    --glass-foreground: oklch(0.97 0 0);
+    --glass-highlight: oklch(0.65 0.17 258 / 22%);
+    --glass-highlight-hover: oklch(1 0 0 / 9%);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+@layer utilities {
+  .blueprint-grid {
+    background-image:
+      linear-gradient(rgba(56, 189, 248, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .dot-bg {
+    background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .dark .dot-bg {
+    background-image: radial-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+  }
+
+  .glass-card {
+    background: rgba(15, 23, 42, 0.56);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+  }
+}

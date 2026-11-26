@@ -1,0 +1,103 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isActiveAdmin() {
+      return isAuthenticated()
+        && request.auth.token.admin == true
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.isActive == true;
+    }
+
+    // Semua mutasi data bisnis wajib melalui Backend Express API (Firebase Admin SDK)
+    // agar validasi Zod, kalkulasi AHSP/RAB, snapshot harga, dan audit log selalu terjaga.
+    match /admins/{adminId} {
+      allow read: if isActiveAdmin() && request.auth.uid == adminId;
+      allow write: if false;
+    }
+
+    match /projects/{projectId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /material_categories/{categoryId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /materials/{materialId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /work_categories/{categoryId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /work_items/{workItemId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /units/{unitId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /regional_prices/{priceId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /ahsp/{ahspId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /ahsp_components/{componentId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /rab_documents/{rabId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /rab_items/{itemId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /budget_realizations/{realizationId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /company_settings/{settingId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /activity_logs/{logId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    match /file_metadata/{fileId} {
+      allow read: if isActiveAdmin();
+      allow write: if false;
+    }
+
+    // Default deny untuk path lainnya
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

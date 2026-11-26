@@ -1,0 +1,53 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isActiveAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    function isValidUploadSize() {
+      return request.resource.size <= 10 * 1024 * 1024;
+    }
+
+    function isAllowedImage() {
+      return request.resource.contentType.matches('image/(jpeg|png|webp|svg\\+xml)');
+    }
+
+    function isAllowedDocument() {
+      return isAllowedImage()
+        || request.resource.contentType == 'application/pdf'
+        || request.resource.contentType == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        || request.resource.contentType == 'application/vnd.ms-excel';
+    }
+
+    match /company/{allPaths=**} {
+      allow read: if isActiveAdmin();
+      allow write: if isActiveAdmin() && isValidUploadSize() && isAllowedImage();
+    }
+
+    match /catalog/{allPaths=**} {
+      allow read: if isActiveAdmin();
+      allow write: if isActiveAdmin() && isValidUploadSize() && isAllowedImage();
+    }
+
+    match /projects/covers/{allPaths=**} {
+      allow read: if isActiveAdmin();
+      allow write: if isActiveAdmin() && isValidUploadSize() && isAllowedImage();
+    }
+
+    match /projects/documents/{allPaths=**} {
+      allow read: if isActiveAdmin();
+      allow write: if isActiveAdmin() && isValidUploadSize() && isAllowedDocument();
+    }
+
+    match /monitoring/evidences/{allPaths=**} {
+      allow read: if isActiveAdmin();
+      allow write: if isActiveAdmin() && isValidUploadSize() && isAllowedDocument();
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
