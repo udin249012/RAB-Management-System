@@ -2,6 +2,7 @@
   "name": "rab-management-system",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Professional Enterprise RAB Management System Monorepo",
   "packageManager": "pnpm@12.21.0",
   "engines": {
