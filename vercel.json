@@ -4,7 +4,7 @@
     "backend": {
       "root": "apps/backend",
       "framework": "express",
-      "entrypoint": "src/vercel.ts",
+      "entrypoint": "dist/vercel.cjs",
       "buildCommand": "pnpm --filter @rab/backend... build"
     },
     "frontend": {
